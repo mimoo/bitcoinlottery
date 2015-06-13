@@ -48,7 +48,7 @@
     "gulp-notify": "~2.2.0",
     "gulp-autoprefixer": "~2.3.1",
     "gulp-less": "~3.0.3",
-    "semantic-ui": "~1.12.3",
-    "gulp": "~3.9.0"
+    "gulp": "~3.9.0",
+    "semantic-ui": "~1.12.3"
   }
 }
