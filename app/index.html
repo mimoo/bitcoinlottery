@@ -39,7 +39,7 @@
   </head>
   <body>
     <main>
-
+      <!-- play !-->
       <div id="play">
 	<h1 class="ui header">Let's find a bitcoin wallet!</h1>
 
@@ -48,12 +48,20 @@
 	<div id="play_button"></div>
       </div>
 
+      <!-- play again? -->
       <div id="play_again" hidden>
 	<h1>Oh no!</h1>
 	<p>The key you generated apparently isn't owned by anyone :(</p>
 
 	<div id="play_again_button"></div>
       </div>
+
+      <!-- you found something! -->
+      <div id="found_something" hidden>
+	<h1>Wow!</h1>
+	<p>Looks like you found something. What are you going to do with it?</p>
+      </div>
+      
     </main>
 
     <script type="text/jsx" src="assets/scripts.js"></script>

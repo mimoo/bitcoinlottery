@@ -2,7 +2,7 @@
 var PlayButton = React.createClass({
     getInitialState: function(){
 	return {
-	    button_status: ''
+	    button_status: 'green'
 	};
     },
     handleClick: function() {
@@ -10,12 +10,15 @@ var PlayButton = React.createClass({
 	this.setState({button_status: 'loading'});
 	$.getJSON('/play', function(result){
 	    console.log(result);
-	    if(result['balance'] == 0){
-		$("#play").fadeOut(function(){
-		    a.setState({ button_status: '' });
+	    $("#play").fadeOut(function(){
+		a.setState({ button_status: 'green' });
+		if(result['balance'] == 0){
 		    $("#play_again").fadeIn();
-		});
-	    }
+		}
+		else{
+		    $("#play_again").fadeIn();
+		}
+	    });
 	});
     },
     render: function() {
@@ -35,17 +38,16 @@ React.render(
 var PlayAgainButton = React.createClass({
     getInitialState: function(){
 	return {
-	    button_status: 'green'
+	    button_status: 'orange'
 	};
     },
     handleClick: function() {
 	this.setState({button_status: 'disabled'});
 	var a = this;
 	$("#play_again").fadeOut(function(){
-	    a.setState({button_status: ''});
+	    a.setState({button_status: 'orange'});
 	    $("#play").fadeIn();
 	});
-
     },
     render: function() {
 	classes = 'ui button massive ' + this.state.button_status;
@@ -55,8 +57,8 @@ var PlayAgainButton = React.createClass({
     }
 });
 
-
 React.render(
     <PlayAgainButton />,
     document.getElementById('play_again_button')
 );
+
