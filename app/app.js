@@ -83,31 +83,51 @@ app.get('/', function(req, res) {
 app.get('/play', function(req, res){
 
   var ip_address = getIP(req);
+
+
   saveVisit(ip_address);
   var keys = createKeys();
   console.log(keys);
 
-  request('https://blockchain.info/address/' + keys.public_key +'?format=json', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      body = JSON.parse(body);
+  canPlay(ip_address, function(possible) {
 
-      canPlay(ip_address, function(possible) {
-        res.json({
-          "balance": body.final_balance,
-          "public_key" : keys.public_key,
-          "private_key" : keys.private_key,
-          "can_play_again" : possible
-        });
-      });
-    }
-    else {
+    if (possible === false) {
       res.json(
         {
-          "error": ":("
+          "can_play_again" : false,
+          "error": "you forget to manage this case dude!"
         }
       );      
     }
-  })
+    else {
+      request('https://blockchain.info/address/' + keys.public_key +'?format=json', function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          body = JSON.parse(body);
+
+          canPlay(ip_address, function(possible) {
+            res.json({
+              "balance": body.final_balance,
+              "public_key" : keys.public_key,
+              "private_key" : keys.private_key,
+              "can_play_again" : possible
+            });
+          });
+        }
+        else {
+          res.json(
+            {
+              "error": ":("
+            }
+          );      
+        }
+      });
+
+
+
+    }
+
+
+  });
 
 });
 
