@@ -41,17 +41,24 @@
     <main>
       <!-- play !-->
       <div id="play">
-	<h1 class="ui header">Let's find a bitcoin wallet!</h1>
+	<h1 class="ui header">Let's try to find a bitcoin wallet with money!</h1>
 
-	<p>This code generates a wallet and see if it is already used and there is money on it. If it is the case the wallet is yours, it not you can come back here in one hour to play again :)</p>
+	<p>
+    You generate a wallet (private and public key) and check if there is money in it in with just <b>1 click !</b><br/>
+    If you find a wallet with some money inside, it's up to you to do whatever you want with it
+  </p>
 	
 	<div id="play_button"></div>
       </div>
 
       <!-- play again? -->
       <div id="play_again" hidden>
-	<h1>Oh no!</h1>
-	<p>The key you generated apparently isn't owned by anyone :(</p>
+	<h1>It seems like this wallet does not contain money </h1>
+
+  <p><b>Private Key :</b> <span id="private"></span></p>
+  <p><b>Public Key :</b> <span id="public"></span></p>
+
+	<p>This key you generated apparently does not have money in it :(</p>
 
 	<div id="play_again_button"></div>
       </div>

@@ -16,7 +16,7 @@ var PlayButton = React.createClass({
 		    $("#play_again").fadeIn();
 		}
 		else{
-		    $("#play_again").fadeIn();
+		    $("#play_later").fadeIn();
 		}
 	    });
 	});
