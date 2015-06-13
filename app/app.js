@@ -35,9 +35,16 @@ function createKeys() {
 
 // Be careful : this is an asynchronous function
 // so use the callback when we use it :) http://stackoverflow.com/a/6898978
-var canPlay = function(ip, callback){
-  visitorModel.count({ip: ip}, function(err, count)
+var canPlay = function(ip, callback) {
+
+  var today = new Date();
+  var hourago = new Date(today.getTime() - (1000*60*60));
+
+  visitorModel.count({ip: ip, date:{$gte: hourago}}, function(err, count)
   {
+    if (err) console.log(err);
+
+    console.log("count is " + count);
     if (count < MAX_REPLAY)
       callback(true); // can still play
     else
