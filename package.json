@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/mimoo/bitcoinlottery/issues"
   },
-  "homepage": "https://github.com/mimoo/bitcoinlottery"
+  "homepage": "https://github.com/mimoo/bitcoinlottery",
+  "dependencies": {
+    "express": "^4.12.4"
+  }
 }
