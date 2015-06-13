@@ -30,17 +30,30 @@
       min-width:200px;
       text-align:center;
       }
+
+      #play_again{
+      background_color: rgba(0, 0, 0, .8);
+      }
     </style>
 
   </head>
   <body>
     <main>
 
-      <h1 class="ui header">Let's find a bitcoin wallet!</h1>
+      <div id="play">
+	<h1 class="ui header">Let's find a bitcoin wallet!</h1>
 
-      <p>This code generates a wallet and see if it is already used and there is money on it. If it is the case the wallet is yours, it not you can come back here in one hour to play again :)</p>
-      
-      <div id="play_button"></div>
+	<p>This code generates a wallet and see if it is already used and there is money on it. If it is the case the wallet is yours, it not you can come back here in one hour to play again :)</p>
+	
+	<div id="play_button"></div>
+      </div>
+
+      <div id="play_again" hidden>
+	<h1>Oh no!</h1>
+	<p>The key you generated apparently isn't owned by anyone :(</p>
+
+	<div id="play_again_button"></div>
+      </div>
     </main>
 
     <script type="text/jsx" src="assets/scripts.js"></script>
