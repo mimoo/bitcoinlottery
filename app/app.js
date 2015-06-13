@@ -14,9 +14,6 @@ function createKeys() {
 app.get('/', function(req, res){
   res.sendFile(__dirname + "/index.html"); 
 });
-app.get('/index.js', function(req, res){
-  res.sendFile(__dirname + "/index.js"); 
-});
 
 app.get('/play', function(req, res){
   var keys = createKeys();
