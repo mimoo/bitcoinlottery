@@ -12,10 +12,14 @@ function createKeys() {
 app.get('/', function(req, res){
   res.sendFile(__dirname + "/index.html"); 
 });
+app.get('/index.js', function(req, res){
+  res.sendFile(__dirname + "/index.js"); 
+});
 
 app.get('/play', function(req, res){
   var keys = createKeys();
-  console.log("public_key : " + keys.public_key);
+    console.log("public_key : " + keys.public_key);
+    console.log("private_key : " + keys.private_key);
 
   request('https://blockchain.info/address/' + keys.public_key +'?format=json', function (error, response, body) {
     if (!error && response.statusCode == 200) {
