@@ -43,25 +43,6 @@
       <div id="play_button"></div>
     </main>
 
-    <script type="text/jsx">
-      var PlayButton = React.createClass({
-      handleClick: function() {
-      $.get('/new_wallet', function(result){
-
-      });
-      },
-      render: function() {
-      classes = 'ui button massive';
-      return (
-      <div className={classes} onClick={this.handleClick}>Play !</div>
-      );
-      }
-      });
-
-      React.render(
-      <PlayButton />,
-      document.getElementById('play_button')
-      );
-    </script>
+    <script type="text/jsx" src="index.js"></script>
   </body>
 </html>
