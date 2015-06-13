@@ -20,6 +20,8 @@ var visitorSchema = mongoose.Schema({
     ip: { type: String, default: "unknown" },
     date: { type: Date, default: Date.now },
 });
+// Mongoose automatically looks for the plural version of your model name
+// so it will look for visitors collection in the db
 var visitorModel = mongoose.model('Visitor', visitorSchema);
 
 // Make assets folder accessible
