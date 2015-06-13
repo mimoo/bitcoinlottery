@@ -3,6 +3,8 @@ var bitcoin = require('bitcoinjs-lib');
 var request = require('request');
 var app = express();
 
+// Make assets folder accessible
+app.use("/assets/", express.static(__dirname + '/assets'));
 
 function createKeys() {
   var key = bitcoin.ECKey.makeRandom()
