@@ -1,6 +1,7 @@
 var express = require('express');
 var bitcoin = require('bitcoinjs-lib');
 var request = require('request');
+
 var app = express();
 
 // Make assets folder accessible
@@ -11,8 +12,19 @@ function createKeys() {
   return {"private_key" : key.toWIF() , "public_key" : key.pub.getAddress().toString()}
 }
 
+function canPlay() {
+  return true;
+}
+
+function updatePlayer() {
+}
+
 app.get('/', function(req, res){
-  res.sendFile(__dirname + "/index.html"); 
+  if (canPlay() === true)
+    res.sendFile(__dirname + "/index.html");
+  else
+    res.sendFile(__dirname + "/no.html");
+
 });
 
 app.get('/play', function(req, res){
@@ -28,7 +40,8 @@ app.get('/play', function(req, res){
         {
           "balance": body.final_balance,
           "public_key" : keys.public_key,
-          "private_key" : keys.private_key
+          "private_key" : keys.private_key,
+          "can_play_again" : canPlay()
         }
       );
     }

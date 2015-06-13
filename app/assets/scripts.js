@@ -10,11 +10,15 @@ var PlayButton = React.createClass({
 	this.setState({button_status: 'loading'});
 	$.getJSON('/play', function(result){
 	    console.log(result);
-	    if(result['balance'] == 0){
-		$("#play").fadeOut(function(){
-		    a.setState({ button_status: '' });
-		    $("#play_again").fadeIn();
-		});
+	    if(result['balance'] == 0) {
+
+            $("#private").text(result['private_key']);
+            $("#public").text(result['public_key']);
+
+    		$("#play").fadeOut(function(){
+    		    a.setState({ button_status: '' });
+    		    $("#play_again").fadeIn();
+    		});
 	    }
 	});
     },
