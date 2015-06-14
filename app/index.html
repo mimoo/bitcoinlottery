@@ -15,59 +15,35 @@
 
     <style>
       *{
-      box-sizing:border-box;
+        box-sizing:border-box;
       }
       body{
-      display:flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
       }
 
       main{
-      max-width:700px;
-      min-width:200px;
-      text-align:center;
+        max-width:700px;
+        min-width:200px;
+        text-align:center;
       }
 
       #play_again{
-      background_color: rgba(0, 0, 0, .8);
+        background_color: rgba(0, 0, 0, .8);
+      }
+      #hidden{
+        display:none;
       }
     </style>
 
   </head>
   <body>
     <main>
-      <!-- play !-->
-      <div id="play">
-	<h1 class="ui header">Let's try to find a bitcoin wallet with money!</h1>
 
-	<p>
-    You generate a wallet (private and public key) and check if there is money in it in with just <b>1 click !</b><br/>
-    If you find a wallet with some money inside, it's up to you to do whatever you want with it
-  </p>
-	
-	<div id="play_button"></div>
-      </div>
-
-      <!-- play again? -->
-      <div id="play_again" hidden>
-	<h1>It seems like this wallet does not contain money </h1>
-
-  <p><b>Private Key :</b> <span id="private"></span></p>
-  <p><b>Public Key :</b> <span id="public"></span></p>
-
-	<p>This key you generated apparently does not have money in it :(</p>
-
-	<div id="play_again_button"></div>
-      </div>
-
-      <!-- you found something! -->
-      <div id="found_something" hidden>
-	<h1>Wow!</h1>
-	<p>Looks like you found something. What are you going to do with it?</p>
-      </div>
+      <div id="play"></div>
       
     </main>
 
