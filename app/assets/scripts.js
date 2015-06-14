@@ -1,6 +1,12 @@
 "use strict";
 
 //
+// CONFIG
+// 
+
+var TIME_PLAY = 60 * 60 * 1000; // 1 hour
+
+//
 // Play component
 //
 var Play = React.createClass({
@@ -42,6 +48,11 @@ var Play = React.createClass({
 		this.setState({current_page: 'play_later'});
     },
 
+    // the user clicked on the Play button
+    handlePlayAgain: function() {
+		this.setState({current_page: 'play_now'});
+    },
+
     //
     render: function() {
     	var partial;
@@ -50,7 +61,7 @@ var Play = React.createClass({
     			partial = <PlayNow onClick={this.handlePlay} />;
     			break;
     		case 'play_later':
-    			partial = <PlayLater />;
+    			partial = <PlayLater handlePlayAgain={this.handlePlayAgain} />;
     			break;
     		case 'play_again':
     			partial = <PlayAgain handleFound={this.handleFound} handleLater={this.handleLater} />;
@@ -122,6 +133,8 @@ var PlayAgain = React.createClass({
     Play: function(){
 
     	this.setState({ button_status: 'loading' });
+    	$("#loader").show();
+    	$("#play_again").hide();
 
     	var this_ = this;
 
@@ -133,12 +146,17 @@ var PlayAgain = React.createClass({
 		    		this_.props.handleLater();
 		    	});
 			// you won!
-			else if(result['balance'] > 0)
-			    this_.props.handleFound(result);
+			else if(result['balance'] > 0){
+				$("#loader").fadeOut(function(){
+					this_.props.handleFound(result);
+				});
+			}
 			else{
 				// display sad results
-
 				this_.setState({ button_status: '' });
+				$("#loader").fadeOut(function(){
+					$("#play_again").fadeIn();
+				});
 			}
 		});
     },
@@ -146,27 +164,40 @@ var PlayAgain = React.createClass({
     render: function() {
 		var classes = 'ui button massive orange ' + this.state.button_status;
 		return (
-		    <div id="play_again">
-			    <h1>It seems like this wallet does not contain money </h1>
-			    <p>The wallet you generated apparently doesn't have any money in it :(</p>
-			    <a className="ui card" href="http://www.dog.com">
-			    <div className="content">
-			    <div className="header">Wallet</div>
-			    <div className="meta">
-			    <span className="category">Animals</span>
-			    </div>
-			    <div className="description">
-			    <p></p>
-			    </div>
-			    </div>
-			    <div className="extra content">
-			    <div className="right floated author">
-			    <img className="ui avatar image" src="/images/avatar/small/matt.jpg" /> Matt
-			    </div>
-			    </div>
-			    </a>
+		    <div>
 
-			    <div className={classes} onClick={this.Play}>Wanna play again ?</div>
+			    <div id="loader" className="ui segment" hidden>
+			      <div className="ui active dimmer">
+			        <div className="ui large text loader">Loading</div>
+			      </div>
+			      <p></p>
+			      <p></p>
+			      <p></p>
+			    </div>
+
+			    <div id="play_again">
+
+				    <h1>It seems like this wallet does not contain money </h1>
+				    <p>The wallet you generated apparently doesn't have any money in it :(</p>
+				    <a className="ui card" href="http://www.dog.com">
+				    <div className="content">
+				    <div className="header">Wallet</div>
+				    <div className="meta">
+				    <span className="category">Animals</span>
+				    </div>
+				    <div className="description">
+				    <p></p>
+				    </div>
+				    </div>
+				    <div className="extra content">
+				    <div className="right floated author">
+				    <img className="ui avatar image" src="/images/avatar/small/matt.jpg" /> Matt
+				    </div>
+				    </div>
+				    </a>
+
+				    <div className={classes} onClick={this.Play}>Wanna play again ?</div>
+				</div>
 		    </div>
 		);
     }
@@ -178,7 +209,7 @@ var PlayAgain = React.createClass({
 var PlayLater = React.createClass({
     getInitialState: function(){
 		return {
-		    button_status: 'orange',
+		    button_status: 'red disabled',
 		    timer: ''
 		};
     },
@@ -189,50 +220,70 @@ var PlayLater = React.createClass({
       		console.log(status);
           	if(this.isMounted()) { // necessary?
           		this.setState({ timer: status['timer'] });
+        		this.decrementTimer();
           	}
         }.bind(this));
-
-        setInterval(this.decrementTimer, 1000);
     },
 
     // decrement timer function
     decrementTimer: function(){
     	this.setState({ timer: this.state.timer - 1000 });
+    	if(this.state.timer < 1000){
+    		this.setState({ 
+    			timer: 0,
+    			button_status: 'green'
+    		});
+    	}
+    	else{
+    		setTimeout(this.decrementTimer, 1000);
+    	}
+    },
+
+    handlePlayAgain: function(){
+
+    	this.props.timerFinished();
     },
 
     render: function() {
+    	// button
+    	var classes = 'ui button massive ' + this.state.button_status;
 
-		var classes = 'ui button massive ' + this.state.button_status;
-
+		// timer
 		var date = new Date(this.state.timer);
 		//var hours = date.getHours();
 		var minutes = "0" + date.getMinutes();
 		var seconds = "0" + date.getSeconds();
 		var formattedTime = minutes.substr(-2) + ':' + seconds.substr(-2);
 
+		// progress bar
+		var progress = 100 - Math.ceil(this.state.timer * 100 / TIME_PLAY);
+
+		// 
 		return (
 		    <div>
+			    <h1>You played enough.</h1>
+			    <p>You now have to wait before you can play again!</p>
 		    
-		    <div className="ui statistic">
-		    <div className="label">
-		    Timer
-		    </div>
-		    <div className="value">
-		    {formattedTime}
-		    </div>
-		    </div>
-		    
-		    <div data-percent={4} className="ui basic demo progress active">
-		    <div style={{ transitionDuration: '300ms', width: '4%'}} className="bar">
-		    <div className="progress"></div>
-		    </div>
-		    <div className="label">4% Complete</div>
-		    </div>
+			    <div className="ui statistic">
+				    <div className="label">
+				    Timer
+				    </div>
 
-		    <div className="ui disabled button">
-		    <i className="user icon"></i>
-		    Play Again
-		    </div>
+				    <div className="value">
+				    {formattedTime}
+				    </div>
+			    </div>
+			    
+			    <div data-percent={4} className="ui indicating progress active">
+				    <div style={{ transitionDuration: '300ms', width: progress + '%'}} className="bar">
+				    	<div className="progress"></div>
+				    </div>
+			    </div>
+
+			    <div className={classes}>
+			    <i className="user icon"></i>
+			    Play Again
+			    </div>
 
 		    </div>
 		);
