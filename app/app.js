@@ -85,23 +85,26 @@ function can_play(ip, callback) {
 		    console.log("last time played:", visitor.date);
 
 		    if (visitor.counter < MAX_REPLAY){
-			callback(0); // can still play
+				callback(0); // can still play
 		    }
 		    else{
-			// timer
-			var time_diff = Date.now() - visitor.date;
-			var time_left = TIME_PLAY - time_diff // one hour
+				// timer
+				var time_diff = Date.now() - visitor.date;
+				var time_left = TIME_PLAY - time_diff // one hour
 
-			// timer done?
-			if(time_left < 0){
-			    visitorModel.findOneAndRemove({ip: ip});
-			    callback(0);
-			}
-			// nope
-			else{
-			    console.log("still has to wait", time_left);
-			    callback(time_left);
-			}
+				console.log("time left:", time_left);
+
+				// timer done?
+				if(time_left < 0){
+				    visitorModel.findOneAndRemove({ip: ip}, function(){
+				    	callback(0);
+				    });
+				}
+				// nope
+				else{
+				    console.log("still has to wait", time_left);
+				    callback(time_left);
+				}
 		    }
 		});
     }
@@ -202,45 +205,45 @@ app.get('/play', function(req, res){
     var ip_address = getIP(req);
 
     can_play(ip_address, function(time_left) {
-	if (time_left != 0) {
-	    res.json({
-		"can_play_again" : false,
-		"timer" : time_left,
-		"balance" : -1
-	    });      
-	}
-	else {
-	    // increment the number of games played
-	    var can_play_again;
+		if (time_left != 0) {
+		    res.json({
+			"can_play_again" : false,
+			"timer" : time_left,
+			"balance" : -1
+		    });      
+		}
+		else {
+		    // increment the number of games played
+		    var can_play_again;
 
-	    if(MAX_REPLAY > 0){
-		    increment_ip(ip_address, function(result){
-		    	can_play_again = result;
+		    if(MAX_REPLAY > 0){
+			    increment_ip(ip_address, function(result){
+			    	can_play_again = result;
+			    });
+			}
+			else{
+				can_play_again = true;
+			}
+
+		    // generate keys
+		    var key = createKeys();
+
+		    // make api call
+		    api_call(key.public_key, function(body){
+			    if(body['error'] != null){
+			    	alert(body['error']);
+			    	return;
+			    }
+			    
+				res.json({
+				    "balance": body.final_balance,
+				    "public_key" : key.public_key,
+				    "private_key" : key.private_key,
+				    "can_play_again" : can_play_again,
+				    "timer" : TIME_PLAY
+				});
 		    });
 		}
-		else{
-			can_play_again = true;
-		}
-
-	    // generate keys
-	    var key = createKeys();
-
-	    // make api call
-	    api_call(key.public_key, function(body){
-		    if(body['error'] != null){
-		    	alert(body['error']);
-		    	return;
-		    }
-		    
-			res.json({
-			    "balance": body.final_balance,
-			    "public_key" : key.public_key,
-			    "private_key" : key.private_key,
-			    "can_play_again" : can_play_again,
-			    "timer" : TIME_PLAY
-			});
-	    });
-	}
 
     });
 });

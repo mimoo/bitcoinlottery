@@ -61,7 +61,7 @@ var Play = React.createClass({
     			partial = <PlayNow onClick={this.handlePlay} />;
     			break;
     		case 'play_later':
-    			partial = <PlayLater handlePlayAgain={this.handlePlayAgain} />;
+    			partial = <PlayLater timerFinished={this.handlePlayAgain} />;
     			break;
     		case 'play_again':
     			partial = <PlayAgain handleFound={this.handleFound} handleLater={this.handleLater} />;
@@ -103,10 +103,10 @@ var PlayNow = React.createClass({
 		var classes = 'ui button massive green ' + this.state.button_status;
 		return (
 		    <div id="play_home"> 
-		    	<h1 className="ui header">Let's try to find a bitcoin wallet with money!</h1>
+		    	<h1 className="ui header">Let's try to find a bitcoin wallet with money in it!</h1>
 		    	<p>
-		        You generate a wallet (private and public key) and check if there is money in it in with just <strong>1 click !</strong><br />
-		        If you find a wallet with some money inside, it's up to you to do whatever you want with it
+		        Clicking on this button will generate a wallet and check if it already exists.<br />
+		        If you find a wallet with some bitcoins inside, it's up to you to do whatever you want with it.
 		      	</p>
 		    	<button className={classes} onClick={this.handleClick}>Play!</button>
 		    </div>
