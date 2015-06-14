@@ -197,14 +197,18 @@ var PlayLater = React.createClass({
 
     // decrement timer function
     decrementTimer: function(){
-    	this.setState({
-    		timer: this.state.timer - 1
-    	});
+    	this.setState({ timer: this.state.timer - 1000 });
     },
 
     render: function() {
 
 		var classes = 'ui button massive ' + this.state.button_status;
+
+		var date = new Date(this.state.timer);
+		//var hours = date.getHours();
+		var minutes = "0" + date.getMinutes();
+		var seconds = "0" + date.getSeconds();
+		var formattedTime = minutes.substr(-2) + ':' + seconds.substr(-2);
 
 		return (
 		    <div>
@@ -214,7 +218,7 @@ var PlayLater = React.createClass({
 		    Timer
 		    </div>
 		    <div className="value">
-		    {this.state.timer}
+		    {formattedTime}
 		    </div>
 		    </div>
 		    
