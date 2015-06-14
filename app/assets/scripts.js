@@ -140,15 +140,13 @@ var PlayAgain = React.createClass({
 
 				this_.setState({ button_status: '' });
 			}
-
-				
 		});
     },
 
     render: function() {
 		var classes = 'ui button massive orange ' + this.state.button_status;
 		return (
-		    <div>
+		    <div id="play_again">
 			    <h1>It seems like this wallet does not contain money </h1>
 			    <p>The wallet you generated apparently doesn't have any money in it :(</p>
 			    <a className="ui card" href="http://www.dog.com">
