@@ -12,7 +12,7 @@ var Play = React.createClass({
 
     // check if the user can play
     componentDidMount: function() {
-        $.get('/can_play', function(status) {
+        $.getJSON('/can_play', function(status) {
       		console.log(status);
           	if(this.isMounted()) { // necessary?
           		var current_page = 'play_now';
@@ -31,7 +31,7 @@ var Play = React.createClass({
     },
 
     // the user clicked on the Play button
-    handleFound: function() {
+    handleFound: function(result) {
 		this.setState({current_page: 'found_something'});
     },
 
@@ -128,7 +128,7 @@ var PlayAgain = React.createClass({
 				this_.props.handleLater();
 			// you won!
 			else if(result['balance'] > 0)
-			    this_.props.handleWin(result);
+			    this_.props.handleFound(result);
 			else{
 				// display sad results
 
@@ -179,21 +179,34 @@ var PlayAgain = React.createClass({
 var PlayLater = React.createClass({
     getInitialState: function(){
 		return {
-		    button_status: 'orange'
+		    button_status: 'orange',
+		    timer: ''
 		};
     },
 
-    handleClick: function() {
-		this.setState({button_status: 'disabled'});
-		var this_ = this;
-		$("#play_again").fadeOut(function(){
-		    this_.setState({button_status: 'orange'});
-		    $("#play").fadeIn();
-		});
+    // get the timer
+    componentDidMount: function() {
+		$.getJSON('/can_play', function(status) {
+      		console.log(status);
+          	if(this.isMounted()) { // necessary?
+          		this.setState({ timer: status['timer'] });
+          	}
+        }.bind(this));
+
+        setInterval(this.decrementTimer, 1000);
+    },
+
+    // decrement timer function
+    decrementTimer: function(){
+    	this.setState({
+    		timer: this.state.timer - 1
+    	});
     },
 
     render: function() {
-		classes = 'ui button massive ' + this.state.button_status;
+
+		var classes = 'ui button massive ' + this.state.button_status;
+
 		return (
 		    <div>
 		    
@@ -202,7 +215,7 @@ var PlayLater = React.createClass({
 		    Timer
 		    </div>
 		    <div className="value">
-		    04:05
+		    {this.state.timer}
 		    </div>
 		    </div>
 		    
