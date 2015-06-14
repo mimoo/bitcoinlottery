@@ -190,7 +190,7 @@ var PlayAgain = React.createClass({
 				    <div className="header">Wallet</div>
 				    <div className="description">
 				    <p>
-				    public key: {this.state.publicKey}  <br />
+				    wallet address: {this.state.publicKey}  <br />
 				    private key: {this.state.privateKey}
 				    </p>
 				    </div>

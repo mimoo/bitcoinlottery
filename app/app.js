@@ -126,13 +126,13 @@ function increment_ip(ip, callback) {
     console.log("incrementing counter for", ip);
 
     var update = {
-	$inc: { counter: 1 }, // increment the counter
-	date: Date.now() // update the date
+		$inc: { counter: 1 }, // increment the counter
+		date: Date.now() // update the date
     };
 
     var options = {
-	new: true, // new: if true, return the modified document rather than the original. defaults to false (changed in 4.0)
-	upsert: true //upsert: bool - creates the object if it doesn't exist. defaults to false.
+		new: true, // new: if true, return the modified document rather than the original. defaults to false (changed in 4.0)
+		upsert: true //upsert: bool - creates the object if it doesn't exist. defaults to false.
     };
 
     visitorModel.findOneAndUpdate({ ip: ip }, update, options, function(err, visitor){
