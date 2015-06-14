@@ -205,7 +205,8 @@ app.get('/play', function(req, res){
 	if (time_left != 0) {
 	    res.json({
 		"can_play_again" : false,
-		"timer" : time_left
+		"timer" : time_left,
+		"balance" : -1
 	    });      
 	}
 	else {

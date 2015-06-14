@@ -27,17 +27,17 @@ var Play = React.createClass({
 
     // the user clicked on the Play button
     handlePlay: function() {
-    	var a = this;
-		$.getJSON('/play', function(result){
-		    console.log(result);
+		this.setState({current_page: 'play_again'});
+    },
 
-			if(result['balance'] > 0)
-			    a.setState({current_page: 'found_something'});
-			else if(result['can_play_again'])
-				a.setState({current_page: 'play_again'});
-			else
-			    a.setState({current_page: 'play_later'});
-		})
+    // the user clicked on the Play button
+    handleFound: function() {
+		this.setState({current_page: 'found_something'});
+    },
+
+    // the user clicked on the Play button
+    handleLater: function() {
+		this.setState({current_page: 'play_later'});
     },
 
     //
@@ -45,13 +45,13 @@ var Play = React.createClass({
     	var partial;
     	switch(this.state.current_page){
     		case 'play_now':
-    			partial = <PlayNow onClick={this.handlePlay}/>;
+    			partial = <PlayNow onClick={this.handlePlay} />;
     			break;
     		case 'play_later':
     			partial = <PlayLater />;
     			break;
     		case 'play_again':
-    			partial = <PlayAgain />;
+    			partial = <PlayAgain handleFound={this.handleFound} handleLater={this.handleLater} />;
     			break;
     		case 'found_something':
     			partial = <FoundSomething />;
@@ -68,8 +68,9 @@ var Play = React.createClass({
     }
 });
 
-
-// Play Now!
+//
+// Play Now, the homepage with explanations and a button
+// 
 var PlayNow = React.createClass({
     getInitialState: function(){
 		return {
@@ -79,16 +80,16 @@ var PlayNow = React.createClass({
 
     handleClick: function() {
 		this.setState({button_status: 'loading'});
-		// make the request
-		// fade this
-		// parent.play_again -> true
-	    this.props.onClick();
+		var this_ = this;
+		$("#play_home").fadeOut(function(){
+			this_.props.onClick();
+		});
     },
 
     render: function() {
 		var classes = 'ui button massive ' + this.state.button_status;
 		return (
-		    <div> 
+		    <div id="play_home"> 
 		    	<h1 className="ui header">Let's try to find a bitcoin wallet with money!</h1>
 		    	<p>
 		        You generate a wallet (private and public key) and check if there is money in it in with just <strong>1 click !</strong><br />
@@ -101,20 +102,45 @@ var PlayNow = React.createClass({
 });
 
 
-// Result of playing
+// Result of playing + Play Again button
 var PlayAgain = React.createClass({
+
     getInitialState: function(){
 		return {
-		    button_status: 'orange'
+		    button_status: 'orange loading'
 		};
     },
 
-    handleClick: function() {
-		this.setState({button_status: 'disabled'});
-		var a = this;
-		$("#play_again").fadeOut(function(){
-		    a.setState({button_status: 'orange'});
-		    $("#play").fadeIn();
+    // when this is load we are supposed to play
+    componentDidMount: function() {
+		this.Play();
+    },
+
+    // happens after clicking on the play button!
+    Play: function(){
+
+    	var this_ = this;
+
+    	$.getJSON('/play', function(result){
+		    console.log(result);
+		    // why are you trying to play?
+		    if(result['balance'] == -1)
+				this_.props.handleLater();
+			// you won!
+			else if(result['balance'] > 0)
+			    this_.props.handleWin(result);
+			else{
+				// display sad results
+
+
+				// button
+				if(result['can_play_again'])
+					this_.setState({ button_status: '' });
+				else
+					this_.setState({ button_status: 'disabled' });
+			}
+
+				
 		});
     },
 
@@ -147,9 +173,9 @@ var PlayAgain = React.createClass({
     }
 });
 
-
-
+//
 // Can't play anymore
+//
 var PlayLater = React.createClass({
     getInitialState: function(){
 		return {
@@ -159,9 +185,9 @@ var PlayLater = React.createClass({
 
     handleClick: function() {
 		this.setState({button_status: 'disabled'});
-		var a = this;
+		var this_ = this;
 		$("#play_again").fadeOut(function(){
-		    a.setState({button_status: 'orange'});
+		    this_.setState({button_status: 'orange'});
 		    $("#play").fadeIn();
 		});
     },
