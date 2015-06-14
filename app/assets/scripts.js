@@ -38,17 +38,17 @@ var Play = React.createClass({
 		this.setState({current_page: 'play_again'});
     },
 
-    // the user clicked on the Play button
+    // the user played and found something
     handleFound: function(result) {
 		this.setState({current_page: 'found_something'});
     },
 
-    // the user clicked on the Play button
+    // the user tried to play but he's counter is too high
     handleLater: function() {
 		this.setState({current_page: 'play_later'});
     },
 
-    // the user clicked on the Play button
+    // the timer is finished, the user can play again
     handlePlayAgain: function() {
 		this.setState({current_page: 'play_now'});
     },
@@ -120,7 +120,9 @@ var PlayAgain = React.createClass({
 
     getInitialState: function(){
 		return {
-		    button_status: 'loading'
+		    button_status: 'loading',
+		    publicKey: '',
+		    privateKey: ''
 		};
     },
 
@@ -153,7 +155,11 @@ var PlayAgain = React.createClass({
 			}
 			else{
 				// display sad results
-				this_.setState({ button_status: '' });
+				this_.setState({ 
+					button_status: '',
+					publicKey: result['public_key'],
+					privateKey: result['private_key']
+				});
 				$("#loader").fadeOut(function(){
 					$("#play_again").fadeIn();
 				});
@@ -179,19 +185,19 @@ var PlayAgain = React.createClass({
 
 				    <h1>It seems like this wallet does not contain money </h1>
 				    <p>The wallet you generated apparently doesn't have any money in it :(</p>
-				    <a className="ui card" href="http://www.dog.com">
+				    <a className="ui card">
 				    <div className="content">
 				    <div className="header">Wallet</div>
-				    <div className="meta">
-				    <span className="category">Animals</span>
-				    </div>
 				    <div className="description">
-				    <p></p>
+				    <p>
+				    public key: {this.state.publicKey}  <br />
+				    private key: {this.state.privateKey}
+				    </p>
 				    </div>
 				    </div>
 				    <div className="extra content">
 				    <div className="right floated author">
-				    <img className="ui avatar image" src="/images/avatar/small/matt.jpg" /> Matt
+				    <i className="bitcoin icon"></i>
 				    </div>
 				    </div>
 				    </a>
@@ -280,10 +286,10 @@ var PlayLater = React.createClass({
 				    </div>
 			    </div>
 
-			    <div className={classes}>
-			    <i className="user icon"></i>
-			    Play Again
-			    </div>
+			    <button className={classes} onClick={this.handlePlayAgain}>
+				    <i className="user icon"></i>
+				    Play Again
+			    </button>
 
 		    </div>
 		);
