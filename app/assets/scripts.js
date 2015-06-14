@@ -1,3 +1,5 @@
+"use strict";
+
 //
 // Play component
 //
@@ -74,7 +76,7 @@ var Play = React.createClass({
 var PlayNow = React.createClass({
     getInitialState: function(){
 		return {
-		    button_status: 'green'
+		    button_status: ''
 		};
     },
 
@@ -87,7 +89,7 @@ var PlayNow = React.createClass({
     },
 
     render: function() {
-		var classes = 'ui button massive ' + this.state.button_status;
+		var classes = 'ui button massive green ' + this.state.button_status;
 		return (
 		    <div id="play_home"> 
 		    	<h1 className="ui header">Let's try to find a bitcoin wallet with money!</h1>
@@ -107,7 +109,7 @@ var PlayAgain = React.createClass({
 
     getInitialState: function(){
 		return {
-		    button_status: 'orange loading'
+		    button_status: 'loading'
 		};
     },
 
@@ -119,25 +121,24 @@ var PlayAgain = React.createClass({
     // happens after clicking on the play button!
     Play: function(){
 
+    	this.setState({ button_status: 'loading' });
+
     	var this_ = this;
 
     	$.getJSON('/play', function(result){
 		    console.log(result);
 		    // why are you trying to play?
 		    if(result['balance'] == -1)
-				this_.props.handleLater();
+		    	$("#play_again").fadeOut(function(){
+		    		this_.props.handleLater();
+		    	});
 			// you won!
 			else if(result['balance'] > 0)
 			    this_.props.handleFound(result);
 			else{
 				// display sad results
 
-
-				// button
-				if(result['can_play_again'])
-					this_.setState({ button_status: '' });
-				else
-					this_.setState({ button_status: 'disabled' });
+				this_.setState({ button_status: '' });
 			}
 
 				
@@ -145,7 +146,7 @@ var PlayAgain = React.createClass({
     },
 
     render: function() {
-		var classes = 'ui button massive ' + this.state.button_status;
+		var classes = 'ui button massive orange ' + this.state.button_status;
 		return (
 		    <div>
 			    <h1>It seems like this wallet does not contain money </h1>
@@ -167,7 +168,7 @@ var PlayAgain = React.createClass({
 			    </div>
 			    </a>
 
-			    <div className={classes} onClick={this.handleClick}>Wanna play again ?</div>
+			    <div className={classes} onClick={this.Play}>Wanna play again ?</div>
 		    </div>
 		);
     }
