@@ -77,8 +77,8 @@ function can_play(ip, callback) {
 
 	    // visitor has never played before
 	    if(visitor == null){
-		callback(0);
-		return;
+			callback(0);
+			return;
 	    }
 	    
 	    console.log(ip, "has played", visitor.counter, "times");
@@ -116,9 +116,9 @@ function getIP(req) {
 
 
 // Increment the number of times that IP played
-// returns false if it's the last time IP can play
-// returns true otherwise
-function increment_ip(ip) {
+// -> false if it's the last time IP can play
+// -> true otherwise
+function increment_ip(ip, callback) {
 
     console.log("incrementing counter for", ip);
 
@@ -135,12 +135,12 @@ function increment_ip(ip) {
     visitorModel.findOneAndUpdate({ ip: ip }, update, options, function(err, visitor){
 	if(err) console.log(err);
 
-	console.log("incrementing the counter for", visitor.ip, "at date", visitor.date", counter is now:", visitor.counter);
+	console.log("incrementing the counter for", visitor.ip, "at date", visitor.date, "counter is now:", visitor.counter);
 
 	if(visitor.counter >= 3)
-	    return false; // can't play anymore after that
+	    callback(false); // can't play anymore after that
 	else
-	    return true;
+	    callback(true);
     });
 
 }
@@ -182,7 +182,17 @@ app.get('/', function(req, res) {
 // get status
 app.get('/can_play', function(req, res) {
     can_play(getIP(req), function (time_left) {
-	res.json({ "can_play_again" : time_left });
+
+    	var can_play_again = true;
+
+    	if(time_left > 0){
+    		can_play_again = false;
+    	}
+
+		res.json({ 
+			"can_play_again" : can_play_again,
+			timer: time_left
+		});
     });
 });
 
@@ -200,7 +210,11 @@ app.get('/play', function(req, res){
 	}
 	else {
 	    // increment the number of games played
-	    var can_play_again = increment_ip(ip_address);
+	    var can_play_again;
+
+	    increment_ip(ip_address, function(result){
+	    	can_play_again = result;
+	    });
 
 	    // generate keys
 	    var key = createKeys();
