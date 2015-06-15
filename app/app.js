@@ -6,6 +6,7 @@
 var MAX_REPLAY = 3; // you can only play three times
 var EXTERN_API = true; // we use the blockchain.info API (for now)
 var TIME_PLAY = 60*60*1000; // we can play 3 times per hour
+var API_KEY = process.env.blockchain_apikey; // blockchain.info api key
 
 /////////////////////////////////////////
 //             REQUIRES
@@ -151,7 +152,7 @@ function increment_ip(ip, callback) {
 function api_call(public_key, callback){
     // Use blockchain.info?
     if(EXTERN_API){
-	request('https://blockchain.info/address/' + public_key +'?format=json', function (error, response, body) {
+	request('https://blockchain.info/address/' + public_key +'?format=json&api_code=' + API_KEY, function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
 		body = JSON.parse(body);
 		callback(body);
