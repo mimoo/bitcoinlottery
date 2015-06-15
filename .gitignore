@@ -30,5 +30,4 @@ node_modules
 #Ignore emacs files
 *~
 
-# ignore semantic
-semantic*
+api_key

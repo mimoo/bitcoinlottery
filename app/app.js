@@ -35,14 +35,14 @@ if(MAX_REPLAY > 0){
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function (callback) {
-	console.log("Connection to mongo successful!");
+		console.log("Connection to mongo successful!");
     });
     // Visitor model that match the db
     // TODO : Put this in an other file
     var visitorSchema = mongoose.Schema({
-	ip: { type: String, default: "unknown" },
-	date: { type: Date, default: Date.now },
-	counter: { type: Number, default: 0 }
+		ip: { type: String, default: "unknown" },
+		date: { type: Date, default: Date.now },
+		counter: { type: Number, default: 0 }
     });
     // Mongoose automatically looks for the plural version of your model name
     // so it will look for visitors collection in the db
@@ -152,15 +152,15 @@ function increment_ip(ip, callback) {
 function api_call(public_key, callback){
     // Use blockchain.info?
     if(EXTERN_API){
-	request('https://blockchain.info/address/' + public_key +'?format=json&api_code=' + API_KEY, function (error, response, body) {
-	    if (!error && response.statusCode == 200) {
-		body = JSON.parse(body);
-		callback(body);
-	    }
-	    else {
-		callback({ "error": "can't query blockchain.info anymore" });
-	    }
-	});
+		request('https://blockchain.info/address/' + public_key +'?format=json&api_code=' + API_KEY, function (error, response, body) {
+		    if (!error && response.statusCode == 200) {
+			body = JSON.parse(body);
+			callback(body);
+		    }
+		    else {
+			callback({ "error": "can't query blockchain.info anymore" });
+		    }
+		});
     }
     else{
 
