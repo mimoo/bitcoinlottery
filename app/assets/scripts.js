@@ -183,7 +183,7 @@ var PlayAgain = React.createClass({
 
 			    <div id="play_again">
 
-				    <h1>It seems like this wallet does not contain money </h1>
+				    <h1>It seems like this wallet does not contain money 😔</h1>
 				    <p>The wallet you generated apparently doesn't have any money in it :(</p>
 				    <a className="ui card">
 				    <div className="content">
