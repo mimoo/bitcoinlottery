@@ -29,8 +29,8 @@ var app = express();
 /////////////////////////////////////////
 //             MONGODB
 ///////////////////////////////////////
-const mongopwd = process.env.MONGO_INITDB_ROOT_PASSWORD
-const mongouser = process.env.MONGO_INITDB_ROOT_USERNAME
+const mongopwd = process.env.MONGO_PASSWORD
+const mongouser = process.env.MONGO_USERNAME
 
 if (MAX_REPLAY > 0) {
 	mongoose.connect(`mongodb+srv://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery`);
