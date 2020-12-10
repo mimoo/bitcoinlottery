@@ -1,18 +1,17 @@
 FROM node:stretch
 
-EXPOSE 80
-
 WORKDIR /app
 
-COPY package.json package.json
+COPY package*.json ./
 RUN npm install
 
 COPY . .
 
 
-ENV DEBUG=express:*
-
 RUN npm install -g nodemon
+
+ENV DEBUG=express:*
+EXPOSE 80
 CMD [ "nodemon", "./bin/www" ]
 
 #CMD ["npm", "start"]

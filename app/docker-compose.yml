@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .:/app
+      - webapp:/app
     depends_on:
       - mongo
 
@@ -30,3 +30,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
+
+volumes:
+  webapp:
+    name: webapp-data
+    
