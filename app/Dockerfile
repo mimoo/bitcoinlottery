@@ -1,7 +1,6 @@
 FROM node:latest
 
-ENV PORT=3000
-EXPOSE 3000
+EXPOSE 80
 
 WORKDIR /app
 
@@ -12,5 +11,7 @@ COPY . .
 
 # RUN npm install -g nodemon
 # CMD [ "nodemon", "index.js" ]
+
+ENV DEBUG=express:*
 
 CMD ["npm", "start"]

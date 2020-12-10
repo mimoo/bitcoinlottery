@@ -2,6 +2,17 @@ version: "3.9"
 
 services:
 
+  web:
+    container_name: bitcoinlottery
+    restart: always
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+
   mongo:
     image: mongo
     restart: always
@@ -19,14 +30,3 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
-
-  web:
-    container_name: bitcoinlottery
-    restart: always
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-    links:
-      - mongo
