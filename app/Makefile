@@ -1,11 +1,10 @@
-.PHONY: build
+.PHONY: build run up 
+
 build:
 	docker-compose build --no-cache
 
-.PHONY: run
 run: 
-	docker-compose up
+	docker-compose build && docker-compose up
 
-.PHONY: up
 up: 
-	docker-compose up
+	docker-compose build && docker-compose up
