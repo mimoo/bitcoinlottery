@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:stretch
 
 EXPOSE 80
 
@@ -9,9 +9,10 @@ RUN npm install
 
 COPY . .
 
-# RUN npm install -g nodemon
-# CMD [ "nodemon", "index.js" ]
 
 ENV DEBUG=express:*
 
-CMD ["npm", "start"]
+RUN npm install -g nodemon
+CMD [ "nodemon", "./bin/www" ]
+
+#CMD ["npm", "start"]
