@@ -29,9 +29,11 @@ var app = express();
 /////////////////////////////////////////
 //             MONGODB
 ///////////////////////////////////////
+const mongopwd = process.env.MONGO_INITDB_ROOT_PASSWORD
+const mongouser = process.env.MONGO_INITDB_ROOT_USERNAME
 
 if (MAX_REPLAY > 0) {
-	mongoose.connect('mongodb://mongo:27017/bitcoinlottery');
+	mongoose.connect(`mongodb+srv://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery`);
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error:'));
 	db.once('open', function (callback) {
