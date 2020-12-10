@@ -31,9 +31,10 @@ var app = express();
 ///////////////////////////////////////
 const mongopwd = process.env.MONGO_PASSWORD
 const mongouser = process.env.MONGO_USERNAME
+console.log(`mongodb://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery`);
 
 if (MAX_REPLAY > 0) {
-	mongoose.connect(`mongodb+srv://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery`);
+	mongoose.connect(`mongodb://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery`, { useNewUrlParser: true });
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error:'));
 	db.once('open', function (callback) {
