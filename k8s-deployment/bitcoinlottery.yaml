@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: bitcoinlottery-deployment
+  labels:
+    app: bitcoinlottery
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitcoinlottery
+  template:
+    metadata:
+      labels:
+        app: bitcoinlottery
+    spec:
+      containers:
+
+        - name: bitcoinlottery
+          image: mimoo/bitcoinlottery:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: MONGO_USERNAME
+              value: root
+            - name: MONGO_PASSWORD
+              value: password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoinlottery
+spec:
+  type: LoadBalancer
+  selector:
+    app: bitcoinlottery
+  ports:
+    - port: 80
+      targetPort: 80
