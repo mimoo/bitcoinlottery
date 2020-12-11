@@ -33,6 +33,12 @@ then push it to dockerhub:
 $ docker push mimoo/bitcoinlottery:latest
 ```
 
+After that, you might want to restart the bitcoinlottery pod in kubernetes (if you are running a cluster):
+
+```sh
+kubectl rollout restart deployment/bitcoinlottery-deployment
+```
+
 ## Instructions to run with kubernetes
 
 The `app/Dockerfile` is pushed to [dockerhub](https://hub.docker.com/repository/docker/mimoo/bitcoinlottery), then:
@@ -41,4 +47,10 @@ The `app/Dockerfile` is pushed to [dockerhub](https://hub.docker.com/repository/
 $ cd k8s-deployment
 $ kubectl apply -f mongo.yaml
 $ kubectl apply -f bitcoinlottery.yaml
+```
+
+note that if you're running it with minikube, you'll have to also run the loadbalancer via:
+
+```sh
+$ minikube tunnel
 ```
