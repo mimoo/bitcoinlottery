@@ -17,15 +17,20 @@ You need to run `docker-compose build` first.
 build and get the "image id":
 
 ```sh
-$ docker build --pull --rm -f "app/Dockerfile" -t mimoo/bitcoinlottery:some_tag "app"
-$ docker images
+$ docker build --pull --rm -f "app/Dockerfile" -t mimoo/bitcoinlottery:latest "app"
 ```
 
-then tag it and push it to dockerhub:
+test the app with docker-compose:
 
 ```sh
-$ docker tag 045447d4c06f mimoo/bitcoinlottery:some_tag
-$ docker push mimoo/bitcoinlottery
+$ cd app
+$ make up
+```
+
+then push it to dockerhub:
+
+```sh
+$ docker push mimoo/bitcoinlottery:latest
 ```
 
 ## Instructions to run with kubernetes
