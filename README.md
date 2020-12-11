@@ -12,10 +12,12 @@ You need to run `docker-compose build` first.
 
 ## Instruction to push an image with docker
 
+([official doc](https://docs.docker.com/docker-hub/))
+
 build and get the "image id":
 
 ```sh
-$ docker build --pull --rm -f "app/Dockerfile" -t bitcoinlottery:latest "app"
+$ docker build --pull --rm -f "app/Dockerfile" -t mimoo/bitcoinlottery:some_tag "app"
 $ docker images
 ```
 

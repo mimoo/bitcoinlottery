@@ -29,16 +29,37 @@ var app = express();
 /////////////////////////////////////////
 //             MONGODB
 ///////////////////////////////////////
+
 const mongopwd = process.env.MONGO_PASSWORD
 const mongouser = process.env.MONGO_USERNAME
 
+// attempt to connect to mongodb every 5 seconds
+var connectWithRetry = function () {
+	var mongooseUrl = `mongodb://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery?authSource=admin`;
+	return mongoose.connect(mongooseUrl, { useNewUrlParser: true }, function (err) {
+		if (err) {
+			console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+			setTimeout(connectWithRetry, 5000);
+		}
+	});
+};
+
+
 if (MAX_REPLAY > 0) {
-	mongoose.connect(`mongodb://${mongouser}:${mongopwd}@mongo:27017/bitcoinlottery?authSource=admin`, { useNewUrlParser: true });
+	// attempt to connect every 5 seconds
+	connectWithRetry();
+
+	// events for connecting to mongodb
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error:'));
 	db.once('open', function (callback) {
 		console.log("Connection to mongo successful!");
+		// TODO: unblock routes when this happen:
+		// app.emit('dbopen');
 	});
+
+	// setup mongodb model
+
 	// Visitor model that match the db
 	// TODO : Put this in an other file
 	var visitorSchema = mongoose.Schema({

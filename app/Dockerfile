@@ -7,7 +7,6 @@ RUN npm install
 
 COPY . /app
 
-
 RUN npm install -g nodemon
 
 ENV DEBUG=express:*
