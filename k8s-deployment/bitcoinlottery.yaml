@@ -28,6 +28,13 @@ spec:
               value: root
             - name: MONGO_PASSWORD
               value: password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256M
+            limits:
+              cpu: 1
+              memory: 1G
 
 ---
 
