@@ -52,11 +52,11 @@ spec:
               mountPath: /data/db
           resources: 
             requests:
-              cpu: 100m
-              memory: 1G
+              cpu: 400m
+              memory: 400000Ki
             limits:
-              cpu: 1
-              memory: 2G
+              cpu: 500m
+              memory: 500000Ki
       volumes:
         - name: storage
           persistentVolumeClaim:

@@ -30,11 +30,11 @@ spec:
               value: password
           resources:
             requests:
-              cpu: 100m
-              memory: 256M
+              cpu: 400m
+              memory: 200000Ki
             limits:
-              cpu: 1
-              memory: 1G
+              cpu: 500m
+              memory: 300000Ki
 
 ---
 
