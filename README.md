@@ -14,10 +14,10 @@ You need to run `docker-compose build` first.
 
 ([official doc](https://docs.docker.com/docker-hub/))
 
-build and get the "image id":
+build and get the "image id" with the correct version number (here `1.0.0`):
 
 ```sh
-$ docker build --pull --rm -f "app/Dockerfile" -t mimoo/bitcoinlottery:latest "app"
+$ docker build --pull --rm -f "app/Dockerfile" -t mimoo/bitcoinlottery:latest -t mimoo/bitcoinlottery:1.0.0 "app"
 ```
 
 test the app with docker-compose:
